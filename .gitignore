@@ -3,3 +3,6 @@ fin-env
 
 # env credential file
 .env
+
+# data folder
+data
