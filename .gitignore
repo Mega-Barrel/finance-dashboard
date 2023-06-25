@@ -1,0 +1,5 @@
+# env package folder
+fin-env
+
+# env credential file
+.env
