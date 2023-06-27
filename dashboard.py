@@ -69,8 +69,7 @@ if len(ticker) > 0:
     fig = px.line(
         df,
         x=df.index,
-        y = df['Adj Close'],
-        title=ticker
+        y = df['Adj Close']
     )
     st.plotly_chart(fig)
 
@@ -97,27 +96,32 @@ with pricing_data:
     st.write(f'Risk Adj Return is {round(annual_return / (stdev * 100), 2)}')
 
 with fundamental_data:
-    fd = FundamentalData(AV_KEY, output_format = 'pandas')
-    # Balance Sheet
-    st.subheader('Balance Sheet')
-    raw_balance_sheet = fd.get_balance_sheet_annual(ticker)[0]
-    balance_sheet = raw_balance_sheet.T[2:]
-    balance_sheet.columns = list(raw_balance_sheet.T.iloc[0])
-    st.write(balance_sheet)
+    try:
+        fd = FundamentalData(AV_KEY, output_format = 'pandas')
+        # Balance Sheet
+        st.subheader('Balance Sheet')
+        raw_balance_sheet = fd.get_balance_sheet_annual(ticker)[0]
+        balance_sheet = raw_balance_sheet.T[2:]
+        balance_sheet.columns = list(raw_balance_sheet.T.iloc[0])
+        st.write(balance_sheet)
 
-    # Income Statement
-    st.subheader('Income Statement')
-    raw_income_statement = fd.get_income_statement_annual(ticker)[0]
-    income_statement = raw_income_statement.T[2:]
-    income_statement.columns = list(raw_income_statement.T.iloc[0])
-    st.write(income_statement)
+        # Income Statement
+        st.subheader('Income Statement')
+        raw_income_statement = fd.get_income_statement_annual(ticker)[0]
+        income_statement = raw_income_statement.T[2:]
+        income_statement.columns = list(raw_income_statement.T.iloc[0])
+        st.write(income_statement)
 
-    # Cash Flow Statement
-    st.subheader('CashFlow Statement')
-    raw_cash_flow = fd.get_cash_flow_annual(ticker)[0]
-    cash_flow = raw_cash_flow.T[2:]
-    cash_flow.columns = list(raw_cash_flow.T.iloc[0])
-    st.write(cash_flow)
+        # Cash Flow Statement
+        st.subheader('CashFlow Statement')
+        raw_cash_flow = fd.get_cash_flow_annual(ticker)[0]
+        cash_flow = raw_cash_flow.T[2:]
+        cash_flow.columns = list(raw_cash_flow.T.iloc[0])
+        st.write(cash_flow)
+
+    except Exception as error:
+        st.write(f'Error Occured!! Reached API limit')
+        st.write(error)
 
 with news:
     st.header(f'News of {ticker}')
